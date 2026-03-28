@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Add watermarks to PDF - PDF Toolkit" />
+  <meta name="theme-color" content="#6366f1" />
+  <title>Add Watermark - PDF Toolkit</title>
+  <style>
+    :root {
+      --primary: #6366f1;
+      --primary-dark: #4f46e5;
+      --success: #10b981;
+      --danger: #ef4444;
+      --text: #1e293b;
+      --text-light: #64748b;
+      --background: #fff;
+      --surface: #fff;
+      --border: #f1f5f9;
+      --gray-light: #cbd5e1;
+      --gray-lighter: #f1f5f9;
+      --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+      --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    [data-theme="dark"] {
+      --primary: #818cf8;
+      --text: #e2e8f0;
+      --text-light: #94a3b8;
+      --background: #0f172a;
+      --surface: #1e293b;
+      --border: #334155;
+      --gray-light: #374151;
+      --gray-lighter: #1e293b;
+      --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.6);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+        sans-serif;
+      line-height: 1.6;
+      color: var(--text);
+      background-color: var(--background);
+      transition: background-color 0.3s;
+    }
+
+    .container {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+
+    .navbar {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .navbar-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.5rem 1rem;
+      max-width: 1280px;
+      margin: 0 auto;
+    }
+
+    .navbar-logo {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--primary);
+      text-decoration: none;
+    }
+
+    .navbar-logo svg {
+      width: 28px;
+      height: 28px;
+    }
+
+    .navbar-menu {
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+      list-style: none;
+    }
+
+    .navbar-menu>li>a {
+      color: var(--text);
+      text-decoration: none;
+      font-weight: 500;
+      padding: 0.5rem 0;
+    }
+
+    .navbar-actions {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+    }
+
+    .auth-section {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .btn {
+      padding: 0.45rem 1.15rem;
+      border-radius: 0.5rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+      border: none;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.4rem;
+      font-size: 0.9rem;
+      min-width: 100px;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: #fff;
+      box-shadow: 0 2px 8px rgba(99, 102, 241, 0.2);
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-dark);
+      transform: translateY(-3px) scale(1.03);
+    }
+
+    .btn-secondary {
+      background: transparent;
+      color: var(--text);
+      border: 2px solid var(--gray-light);
+    }
+
+    .btn-secondary:hover {
+      background: var(--primary);
+      color: #fff;
+      border-color: var(--primary);
+    }
+
+    .tool-page-wrapper {
+      min-height: calc(100vh - 100px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 6rem 1.5rem 4rem;
+    }
+
+    .tool-card-container {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 1.5rem;
+      padding: 2.5rem;
+      box-shadow: var(--shadow-xl);
+      max-width: 800px;
+      width: 100%;
+    }
+
+    .page-header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .page-header h1 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .page-header p {
+      color: var(--text-light);
+      font-size: 1.1rem;
+      margin-top: 0.5rem;
+    }
+
+    .drop-zone {
+      border: 2px dashed var(--primary);
+      background: var(--gray-lighter);
+      padding: 3rem;
+      border-radius: 1rem;
+      text-align: center;
+      cursor: pointer;
+      color: var(--text);
+      transition: var(--transition);
+      margin-bottom: 1.5rem;
+    }
+
+    .drop-zone:hover,
+    .drop-zone.active {
+      background: rgba(99, 102, 241, 0.1);
+      border-color: var(--primary-dark);
+    }
+
+    .drop-zone svg {
+      width: 48px;
+      height: 48px;
+      stroke: var(--primary);
+      margin-bottom: 0.5rem;
+    }
+
+    .file-list {
+      margin-top: 1.5rem;
+      max-height: 300px;
+      overflow-y: auto;
+    }
+
+    .file-item {
+      display: flex;
+      align-items: center;
+      padding: 0.75rem;
+      border-bottom: 1px solid var(--border);
+      gap: 1rem;
+    }
+
+    .file-item:last-child {
+      border-bottom: none;
+    }
+
+    .file-item-info {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      flex-grow: 1;
+      overflow: hidden;
+    }
+
+    .file-item-info span {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .icon-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--danger);
+      padding: 0.25rem;
+    }
+
+    .icon-btn svg {
+      width: 16px;
+      height: 16px;
+    }
+
+    .tool-options {
+      margin-top: 2rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+      color: var(--text);
+      font-size: 0.95rem;
+    }
+
+    .form-group input,
+    .form-group select {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      border: 2px solid var(--gray-light);
+      border-radius: 0.5rem;
+      font-size: 1rem;
+      background: var(--surface);
+      color: var(--text);
+      transition: var(--transition);
+    }
+
+    .btn-process {
+      margin-top: 2rem;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    .toast-container {
+      position: fixed;
+      top: 5rem;
+      right: 1rem;
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .toast {
+      padding: 1rem 1.5rem;
+      border-radius: 0.5rem;
+      box-shadow: var(--shadow-xl);
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      min-width: 300px;
+      animation: slideIn 0.3s ease;
+      background: var(--surface);
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+
+    @keyframes slideIn {
+      from {
+        transform: translateX(400px);
+        opacity: 0;
+      }
+
+      to {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+
+    .toast.success {
+      border-left: 4px solid var(--success);
+    }
+
+    .toast.error {
+      border-left: 4px solid var(--danger);
+    }
+
+    .toast.info {
+      border-left: 4px solid var(--primary);
+    }
+
+    .opacity-display {
+      display: inline-block;
+      margin-left: 10px;
+      font-weight: 600;
+      color: var(--primary);
+    }
+  </style>
+</head>
+
+<body data-theme="light">
+  <div class="toast-container" id="toastContainer"></div>
+  <nav class="navbar">
+    <div class="navbar-container">
+      <a href="../index.html" class="navbar-logo">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+          <polyline points="14 2 14 8 20 8"></polyline>
+        </svg>
+        <span>PDF Toolkit</span>
+      </a>
+      <ul class="navbar-menu">
+        <li><a href="../index.html#tools">All Tools</a></li>
+        <li><a href="../index.html#features">Features</a></li>
+        <div class="navbar-actions">
+          <div class="auth-section">
+            <a href="../auth/login.html" class="btn btn-secondary">Login</a>
+            <a href="../auth/signup.html" class="btn btn-primary">Sign Up</a>
+          </div>
+          <button id="theme-toggle" aria-label="Toggle dark mode">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+            </svg>
+          </button>
+        </div>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="tool-page-wrapper">
+    <div class="container">
+      <div class="tool-card-container">
+        <div class="page-header">
+          <h1>Add Watermark</h1>
+          <p>Apply text watermarks to protect your PDF documents</p>
+        </div>
+
+        <div>
+          <div class="drop-zone" id="pdfDropZone">
+            <input type="file" id="fileUploadInput" accept=".pdf" style="display: none" />
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"></path>
+            </svg>
+            <p>Drop PDF file here or click to browse</p>
+          </div>
+          <div id="fileList" class="file-list"></div>
+        </div>
+
+        <div class="tool-options">
+          <h3 style="margin-bottom: 1rem; color: var(--primary)">
+            Watermark Settings
+          </h3>
+          <form id="toolForm">
+            <div class="form-group">
+              <label for="watermarkText">Watermark Text</label>
+              <input type="text" id="watermarkText" placeholder="CONFIDENTIAL" value="DRAFT" required />
+            </div>
+            <div class="form-group">
+              <label for="position">Position</label>
+              <select id="position" required>
+                <option value="diagonal">Diagonal (Center)</option>
+                <option value="center">Center</option>
+                <option value="top-center">Top Center</option>
+                <option value="bottom-center">Bottom Center</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="opacity">Opacity<span id="opacityValue" class="opacity-display">50%</span></label>
+              <input type="range" id="opacity" min="0.1" max="1" step="0.1" value="0.5" />
+            </div>
+            <div class="form-group">
+              <label for="fontSize">Font Size (pt)</label>
+              <input type="number" id="fontSize" min="20" max="100" value="60" required />
+            </div>
+            <button type="submit" class="btn btn-primary btn-process" id="processBtn" disabled>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                style="width: 20px; height: 20px">
+                <polyline points="20 6 9 17 4 12"></polyline>
+              </svg>
+              <span>Add Watermark</span>
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    class ToastManager {
+      show(e, t = "info") {
+        const o = document.createElement("div");
+        (o.className = `toast ${t}`),
+          (o.innerHTML = `<span>${e}</span><button class="toast-close" onclick="this.parentNode.remove()">×</button>`),
+          document.getElementById("toastContainer").appendChild(o),
+          setTimeout(() => o.remove(), 6e3);
+      }
+    }
+    const toast = new ToastManager(),
+      root = document.documentElement,
+      THEME_KEY = "pdfToolkitTheme";
+    function applyTheme(e) {
+      const t = "dark" === e;
+      root.setAttribute("data-theme", t ? "dark" : "light"),
+        document
+          .getElementById("theme-toggle")
+          .setAttribute("aria-pressed", t);
+    }
+    const savedTheme = localStorage.getItem(THEME_KEY);
+    applyTheme(
+      savedTheme ||
+        (window.matchMedia &&
+          window.matchMedia("(prefers-color-scheme: dark)").matches)
+        ? "dark"
+        : "light"
+    );
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+      const e = "dark" === root.getAttribute("data-theme") ? "dark" : "light",
+        t = "light" === e ? "dark" : "light";
+      localStorage.setItem(THEME_KEY, t), applyTheme(t);
+    });
+
+    const MAX_FILE_SIZE_BYTES = 52428800,
+      ALLOWED_MIME_TYPES = ["application/pdf"];
+    const fileUploadInput = document.getElementById("fileUploadInput"),
+      dropZone = document.getElementById("pdfDropZone"),
+      fileListContainer = document.getElementById("fileList"),
+      processBtn = document.getElementById("processBtn"),
+      toolForm = document.getElementById("toolForm"),
+      opacityInput = document.getElementById("opacity"),
+      opacityValueSpan = document.getElementById("opacityValue");
+    let currentFile = null;
+
+    function isValidFile(e) {
+      return e.size > MAX_FILE_SIZE_BYTES
+        ? (toast.show(`File ${e.name} is too large (max 50MB).`, "error"), !1)
+        : ALLOWED_MIME_TYPES.includes(e.type) ||
+        (toast.show(`File ${e.name} is not a PDF file.`, "error"), !1);
+    }
+    function updateProcessButtonState() {
+      processBtn.disabled = !currentFile;
+    }
+    function addFile(e) {
+      if (!isValidFile(e)) return;
+      const t = (e.size / 1048576).toFixed(2);
+      (currentFile = { file: e, id: Date.now() }),
+        (fileListContainer.innerHTML = `<div class="file-item"><div class="file-item-info"><span>${e.name}</span><span>(${t} MB)</span></div><button class="icon-btn" type="button" onclick="window.removeFile()"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button></div>`),
+        toast.show("PDF uploaded. Configure watermark.", "success"),
+        updateProcessButtonState();
+    }
+    window.removeFile = function () {
+      (currentFile = null),
+        (fileListContainer.innerHTML = ""),
+        toast.show("File removed.", "info"),
+        updateProcessButtonState();
+    };
+
+    ["dragenter", "dragover", "dragleave", "drop"].forEach((e) => {
+      dropZone.addEventListener(
+        e,
+        (e) => {
+          e.preventDefault(), e.stopPropagation();
+        },
+        !1
+      );
+    });
+    ["dragenter", "dragover"].forEach((e) => {
+      dropZone.addEventListener(
+        e,
+        () => dropZone.classList.add("active"),
+        !1
+      );
+    });
+    ["dragleave", "drop"].forEach((e) => {
+      dropZone.addEventListener(
+        e,
+        () => dropZone.classList.remove("active"),
+        !1
+      );
+    });
+    dropZone.addEventListener(
+      "drop",
+      (e) => {
+        e.dataTransfer.files[0] && addFile(e.dataTransfer.files[0]);
+      },
+      !1
+    );
+    dropZone.addEventListener("click", () => fileUploadInput.click());
+    fileUploadInput.onchange = (e) => {
+      e.target.files[0] && addFile(e.target.files[0]),
+        (e.target.value = null);
+    };
+
+    opacityInput.addEventListener("input", () => {
+      opacityValueSpan.textContent = `${(100 * opacityInput.value).toFixed(
+        0
+      )}%`;
+    });
+
+    toolForm.addEventListener("submit", async (e) => {
+      if ((e.preventDefault(), !currentFile))
+        return void toast.show("Please upload a PDF file first.", "error");
+      const t = document.getElementById("watermarkText").value,
+        o = document.getElementById("position").value,
+        n = parseFloat(document.getElementById("opacity").value),
+        a = parseInt(document.getElementById("fontSize").value);
+      (processBtn.disabled = !0),
+        (processBtn.querySelector("span").textContent = "Adding...");
+      try {
+        const e = new FormData();
+        e.append("file", currentFile.file),
+          e.append("watermarkText", t),
+          e.append("position", o),
+          e.append("opacity", n),
+          e.append("fontSize", a);
+        const s = await fetch("/api/add-watermark", {
+          method: "POST",
+          body: e,
+        }),
+          r = await s.json();
+        if (r.success && s.ok) {
+          toast.show("Watermark added successfully!", "success");
+          const e = document.createElement("a");
+          (e.href = r.downloadUrl),
+            (e.download = r.filename || "watermarked.pdf"),
+            document.body.appendChild(e),
+            e.click(),
+            document.body.removeChild(e),
+            (currentFile = null),
+            (fileListContainer.innerHTML = ""),
+            updateProcessButtonState();
+        } else
+          toast.show(
+            `Error: ${r.message || "Failed to add watermark"}`,
+            "error"
+          );
+      } catch (e) {
+        console.error("Error:", e),
+          toast.show(`Network error: ${e.message}`, "error");
+      }
+      (processBtn.disabled = !1),
+        (processBtn.querySelector("span").textContent = "Add Watermark");
+    });
+  </script>
+</body>
+
+</html>

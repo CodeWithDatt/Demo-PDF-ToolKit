@@ -1,0 +1,908 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Dedicated page for Sign PDF in PDF Toolkit." />
+  <meta name="theme-color" content="#6366f1" />
+  <link rel="icon" href="../https://placehold.co/16x16/6366f1/ffffff?text=P" type="image/x-icon" />
+  <title>Sign PDF - PDF Toolkit</title>
+
+  <style>
+    /* -------------------------------------------------------- */
+    /* --- FULL EMBEDDED CSS (START) --- */
+    /* -------------------------------------------------------- */
+    :root {
+      --primary: #6366f1;
+      --primary-dark: #4f46e5;
+      --secondary: #8b5cf6;
+      --accent: #ec4899;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+      --dark: #0f172a;
+      --dark-light: #1e293b;
+      --gray: #64748b;
+      --gray-light: #cbd5e1;
+      --gray-lighter: #f1f5f9;
+      --white: #ffffff;
+      --text: #1e293b;
+      --text-light: #64748b;
+      --background: var(--white);
+      --surface: var(--white);
+      --border: var(--gray-lighter);
+      --gradient-1: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+      --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+      --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+      --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      --focus-outline-color: var(--primary);
+    }
+
+    [data-theme="dark"] {
+      --primary: #818cf8;
+      --primary-dark: #6366f1;
+      --text: #e2e8f0;
+      --text-light: #94a3b8;
+      --background: #0f172a;
+      --surface: #1e293b;
+      --border: #334155;
+      --white: #0f172a;
+      --gray-lighter: #1e293b;
+      --gray-light: #374151;
+      --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+      --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.4);
+      --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+      --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.6);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+        "Helvetica Neue", Arial, sans-serif;
+      line-height: 1.6;
+      color: var(--text);
+      background-color: var(--background);
+      overflow-x: hidden;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    button:focus,
+    a:focus,
+    input:focus,
+    [role="button"]:focus {
+      outline: 3px solid var(--primary);
+      outline-offset: 2px;
+      border-radius: 0.5rem;
+    }
+
+    .container {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+
+    /* Navbar styles (simplified for tool page template) */
+    .navbar {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .navbar-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.5rem 1rem;
+      max-width: 1280px;
+      margin: 0 auto;
+    }
+
+    .navbar-logo {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--primary);
+      text-decoration: none;
+    }
+
+    .navbar-logo svg {
+      width: 28px;
+      height: 28px;
+    }
+
+    .navbar-menu {
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+      list-style: none;
+    }
+
+    .navbar-menu>li>a {
+      color: var(--text);
+      text-decoration: none;
+      font-weight: 500;
+      padding: 0.5rem 0;
+    }
+
+    .navbar-actions {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+    }
+
+    .auth-section {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .btn {
+      padding: 0.45rem 1.15rem;
+      border-radius: 0.5rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+      border: none;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.4rem;
+      font-size: 0.9rem;
+      min-width: 100px;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+      box-shadow: 0 2px 8px rgba(99, 102, 241, 0.2);
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-dark);
+      transform: translateY(-3px) scale(1.03);
+    }
+
+    .btn-secondary {
+      background: transparent;
+      color: var(--text);
+      border: 2px solid var(--gray-light);
+    }
+
+    .btn-secondary:hover {
+      background: var(--primary);
+      color: white;
+      border-color: var(--primary);
+      transform: translateY(-3px) scale(1.03);
+    }
+
+    /* Tool Page Specific Layout CSS */
+    .tool-page-wrapper {
+      min-height: calc(100vh - 100px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 6rem 1.5rem 4rem;
+    }
+
+    .tool-card-container {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 1.5rem;
+      padding: 2.5rem;
+      box-shadow: var(--shadow-xl);
+      max-width: 800px;
+      width: 100%;
+    }
+
+    .page-header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .page-header h1 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .page-header p {
+      color: var(--text-light);
+      font-size: 1.1rem;
+      margin-top: 0.5rem;
+    }
+
+    /* Drop Zone / Inputs */
+    .drop-zone {
+      border: 2px dashed var(--primary);
+      background: var(--gray-lighter);
+      padding: 3rem;
+      border-radius: 1rem;
+      text-align: center;
+      cursor: pointer;
+      color: var(--text);
+      transition: var(--transition);
+      margin-bottom: 1.5rem;
+    }
+
+    .drop-zone:hover,
+    .drop-zone.active {
+      background: rgba(99, 102, 241, 0.1);
+      border-color: var(--primary-dark);
+    }
+
+    .drop-zone svg {
+      width: 48px;
+      height: 48px;
+      stroke: var(--primary);
+      margin-bottom: 0.5rem;
+    }
+
+    .file-list {
+      margin-top: 1.5rem;
+      max-height: 300px;
+      overflow-y: auto;
+    }
+
+    .file-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem;
+      border-radius: 0.75rem;
+      background: var(--gray-lighter);
+      margin-bottom: 0.75rem;
+      transition: var(--transition);
+    }
+
+    .file-item:hover {
+      background: rgba(99, 102, 241, 0.1);
+    }
+
+    .file-item-info {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+
+    .file-item-actions {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .icon-btn {
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      padding: 0.4rem;
+      border-radius: 0.5rem;
+      color: var(--gray);
+      transition: var(--transition);
+    }
+
+    .icon-btn:hover {
+      color: var(--danger);
+      background: rgba(239, 68, 68, 0.1);
+    }
+
+    .text-xs {
+      font-size: 0.75rem;
+    }
+
+    .text-gray-500 {
+      color: var(--text-light);
+    }
+
+    /* Tool Options (Inputs, etc.) */
+    .tool-options {
+      margin-top: 2rem;
+    }
+
+    .form-group {
+      margin-bottom: 1.25rem;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .form-group input[type="text"],
+    .form-group input[type="number"],
+    .form-group input[type="file"],
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 0.75rem;
+      border: 1px solid var(--border);
+      border-radius: 0.5rem;
+      background: var(--surface);
+      color: var(--text);
+      font-size: 1rem;
+      transition: var(--transition);
+    }
+
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+
+    .btn-large {
+      width: 100%;
+      padding: 1rem;
+      font-size: 1rem;
+    }
+
+    .btn-process {
+      margin-top: 1.5rem;
+    }
+
+    .btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none !important;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    /* Toast Notifications */
+    #toastContainer {
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      z-index: 10000;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .toast {
+      background: var(--surface);
+      color: var(--text);
+      padding: 1rem 1.5rem;
+      border-radius: 0.75rem;
+      box-shadow: var(--shadow-lg);
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      max-width: 400px;
+      animation: slideIn 0.3s ease;
+    }
+
+    .toast.success {
+      border-left: 4px solid var(--success);
+    }
+
+    .toast.error {
+      border-left: 4px solid var(--danger);
+    }
+
+    .toast.info {
+      border-left: 4px solid var(--primary);
+    }
+
+    .toast-close {
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      font-size: 1.5rem;
+      color: var(--text-light);
+      padding: 0;
+      line-height: 1;
+    }
+
+    @keyframes slideIn {
+      from {
+        transform: translateX(400px);
+        opacity: 0;
+      }
+
+      to {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+
+    /* Canvas for signature drawing */
+    #signatureCanvas {
+      border: 2px solid var(--primary);
+      border-radius: 0.5rem;
+      cursor: crosshair;
+      display: block;
+      margin: 0 auto;
+      background: white;
+    }
+
+    .canvas-controls {
+      display: flex;
+      gap: 0.75rem;
+      justify-content: center;
+      margin-top: 1rem;
+    }
+
+    .text-input-container {
+      margin-top: 1rem;
+    }
+
+    /* Footer */
+    .footer {
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      padding: 1.5rem 0;
+      text-align: center;
+      color: var(--text-light);
+    }
+  </style>
+</head>
+
+<body>
+  <div id="toastContainer"></div>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="navbar-container">
+      <a href="/" class="navbar-logo">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+          <polyline points="14 2 14 8 20 8"></polyline>
+        </svg>
+        <span>PDF Toolkit</span>
+      </a>
+      <div class="navbar-actions">
+        <button id="theme-toggle" class="btn btn-secondary" aria-label="Toggle Dark Mode">
+          🌙
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <div class="tool-page-wrapper">
+    <div class="tool-card-container">
+      <div class="page-header">
+        <h1>✍️ Sign PDF</h1>
+        <p>Add your digital signature to PDF documents</p>
+      </div>
+
+      <div class="tool-content">
+        <!-- Drop Zone -->
+        <div>
+          <input type="file" id="fileUploadInput" accept="application/pdf" hidden />
+          <div class="drop-zone" id="pdfDropZone">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M3 17a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v1a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-1z"></path>
+              <path d="M12 15V3"></path>
+            </svg>
+            <p>Drop <strong>single PDF file</strong> here or click to browse</p>
+          </div>
+          <div id="fileList" class="file-list"></div>
+        </div>
+
+        <div class="tool-options">
+          <h3 style="margin-bottom: 1rem; color: var(--primary)">
+            Signature Options
+          </h3>
+          <form id="toolForm">
+            <div id="toolOptions">
+              <div class="form-group">
+                <label for="signatureMethod">Signature Method</label>
+                <select id="signatureMethod" required>
+                  <option value="draw">Draw Signature</option>
+                  <option value="upload">Upload Image</option>
+                  <option value="text">Type Text</option>
+                </select>
+              </div>
+
+              <!-- Draw Signature Canvas -->
+              <div class="form-group" id="drawSignatureInput">
+                <label>Draw Your Signature</label>
+                <canvas id="signatureCanvas" width="600" height="200"></canvas>
+                <div class="canvas-controls">
+                  <button type="button" class="btn btn-secondary" id="clearCanvas">Clear</button>
+                </div>
+              </div>
+
+              <!-- Upload Signature Image -->
+              <div class="form-group hidden" id="uploadSignatureInput">
+                <label for="signatureImage">Upload Signature Image (PNG/JPG)</label>
+                <input type="file" id="signatureImage" accept="image/png,image/jpeg,image/jpg" />
+              </div>
+
+              <!-- Text Signature -->
+              <div class="form-group hidden" id="textSignatureInput">
+                <label for="signatureText">Type Your Signature</label>
+                <input type="text" id="signatureText" placeholder="Enter your name" maxlength="50" />
+                <div class="form-group" style="margin-top: 1rem;">
+                  <label for="fontSize">Font Size</label>
+                  <select id="fontSize">
+                    <option value="24">Small (24px)</option>
+                    <option value="36" selected>Medium (36px)</option>
+                    <option value="48">Large (48px)</option>
+                    <option value="60">Extra Large (60px)</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="fontFamily">Font Style</label>
+                  <select id="fontFamily">
+                    <option value="Helvetica">Helvetica</option>
+                    <option value="Courier">Courier</option>
+                    <option value="Times-Roman">Times Roman</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="signaturePosition">Signature Position</label>
+                <select id="signaturePosition" required>
+                  <option value="bottom-right">Bottom Right</option>
+                  <option value="bottom-left">Bottom Left</option>
+                  <option value="bottom-center">Bottom Center</option>
+                  <option value="top-right">Top Right</option>
+                  <option value="top-left">Top Left</option>
+                  <option value="center">Center</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="signaturePage">Apply to Page</label>
+                <select id="signaturePage" required>
+                  <option value="last">Last Page</option>
+                  <option value="first">First Page</option>
+                  <option value="all">All Pages</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="outputName">Output Filename</label>
+                <input type="text" id="outputName" placeholder="signed_document.pdf" value="signed_document.pdf" />
+              </div>
+            </div>
+            <button type="submit" class="btn btn-primary btn-large btn-process" id="processBtn" disabled>
+              <span>Sign PDF</span>
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-bottom">
+        <p>
+          &copy; <span id="currentYear">2025</span> PDF Toolkit. All rights
+          reserved.
+        </p>
+      </div>
+    </div>
+  </footer>
+
+  <script type="module">
+    // --- UTILITY/THEME/AUTH (Embedded for Standalone File) ---
+    class ToastManager {
+      show(message, type = "info") {
+        const t = document.createElement("div");
+        t.className = `toast ${type}`;
+        t.innerHTML = `<span>${message}</span><button class="toast-close" onclick="this.parentNode.remove()">×</button>`;
+        document.getElementById("toastContainer").appendChild(t);
+        setTimeout(() => t.remove(), 6000);
+      }
+    }
+    const toast = new ToastManager();
+    const root = document.documentElement;
+    const THEME_KEY = "pdfToolkitTheme";
+    function applyTheme(theme) {
+      const isDark = theme === "dark";
+      root.setAttribute("data-theme", isDark ? "dark" : "light");
+      document
+        .getElementById("theme-toggle")
+        .setAttribute("aria-pressed", isDark);
+    }
+    const savedTheme = localStorage.getItem(THEME_KEY);
+    applyTheme(
+      savedTheme
+        ? savedTheme
+        : window.matchMedia &&
+          window.matchMedia("(prefers-color-scheme: dark)").matches
+          ? "dark"
+          : "light"
+    );
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+      const currentTheme =
+        root.getAttribute("data-theme") === "dark" ? "dark" : "light";
+      const newTheme = currentTheme === "light" ? "dark" : "light";
+      localStorage.setItem(THEME_KEY, newTheme);
+      applyTheme(newTheme);
+    });
+
+    // --- TOOL SPECIFIC CONSTANTS ---
+    const MAX_FILE_SIZE_BYTES = 50 * 1024 * 1024;
+    const ALLOWED_MIME_TYPES = ["application/pdf"];
+
+    // --- DOM ELEMENTS ---
+    const fileUploadInput = document.getElementById("fileUploadInput");
+    const dropZone = document.getElementById("pdfDropZone");
+    const fileListContainer = document.getElementById("fileList");
+    const processBtn = document.getElementById("processBtn");
+    const toolForm = document.getElementById("toolForm");
+    const signatureMethodSelect = document.getElementById("signatureMethod");
+    const drawSignatureInputGroup = document.getElementById("drawSignatureInput");
+    const uploadSignatureInputGroup = document.getElementById("uploadSignatureInput");
+    const textSignatureInputGroup = document.getElementById("textSignatureInput");
+    const signatureCanvas = document.getElementById("signatureCanvas");
+    const clearCanvasBtn = document.getElementById("clearCanvas");
+
+    let currentFile = null;
+    let isDrawing = false;
+    let canvasContext = signatureCanvas.getContext("2d");
+
+    // Setup canvas
+    canvasContext.strokeStyle = "#000000";
+    canvasContext.lineWidth = 2;
+    canvasContext.lineCap = "round";
+    canvasContext.lineJoin = "round";
+
+    // Canvas drawing handlers
+    signatureCanvas.addEventListener("mousedown", (e) => {
+      isDrawing = true;
+      const rect = signatureCanvas.getBoundingClientRect();
+      canvasContext.beginPath();
+      canvasContext.moveTo(e.clientX - rect.left, e.clientY - rect.top);
+    });
+
+    signatureCanvas.addEventListener("mousemove", (e) => {
+      if (!isDrawing) return;
+      const rect = signatureCanvas.getBoundingClientRect();
+      canvasContext.lineTo(e.clientX - rect.left, e.clientY - rect.top);
+      canvasContext.stroke();
+    });
+
+    signatureCanvas.addEventListener("mouseup", () => {
+      isDrawing = false;
+    });
+
+    signatureCanvas.addEventListener("mouseleave", () => {
+      isDrawing = false;
+    });
+
+    // Touch support for mobile
+    signatureCanvas.addEventListener("touchstart", (e) => {
+      e.preventDefault();
+      isDrawing = true;
+      const rect = signatureCanvas.getBoundingClientRect();
+      const touch = e.touches[0];
+      canvasContext.beginPath();
+      canvasContext.moveTo(touch.clientX - rect.left, touch.clientY - rect.top);
+    });
+
+    signatureCanvas.addEventListener("touchmove", (e) => {
+      e.preventDefault();
+      if (!isDrawing) return;
+      const rect = signatureCanvas.getBoundingClientRect();
+      const touch = e.touches[0];
+      canvasContext.lineTo(touch.clientX - rect.left, touch.clientY - rect.top);
+      canvasContext.stroke();
+    });
+
+    signatureCanvas.addEventListener("touchend", () => {
+      isDrawing = false;
+    });
+
+    clearCanvasBtn.addEventListener("click", () => {
+      canvasContext.clearRect(0, 0, signatureCanvas.width, signatureCanvas.height);
+      toast.show("Canvas cleared", "info");
+    });
+
+    function isValidFile(file) {
+      if (file.size > MAX_FILE_SIZE_BYTES) {
+        toast.show(`File ${file.name} is too large (max 50MB).`, "error");
+        return false;
+      }
+      if (!ALLOWED_MIME_TYPES.includes(file.type)) {
+        toast.show(`File ${file.name} is not a PDF file.`, "error");
+        return false;
+      }
+      return true;
+    }
+
+    function updateProcessButtonState() {
+      processBtn.disabled = !currentFile;
+    }
+
+    function addFile(file) {
+      if (!isValidFile(file)) return;
+      currentFile = { file, id: Date.now() };
+      fileListContainer.innerHTML = `<div class="file-item" data-id="${currentFile.id}"> <div class="file-item-info"><span>${file.name}</span><span class="text-xs text-gray-500">(${(file.size / (1024 * 1024)).toFixed(2)} MB)</span></div> <button class="icon-btn" type="button" onclick="removeFile()" aria-label="Remove file"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button> </div>`;
+      toast.show("PDF uploaded. Configure signature options.", "success");
+      updateProcessButtonState();
+    }
+
+    window.removeFile = function () {
+      currentFile = null;
+      fileListContainer.innerHTML = "";
+      toast.show("File removed.", "info");
+      updateProcessButtonState();
+    };
+
+    function toggleSignatureInputs() {
+      const method = signatureMethodSelect.value;
+
+      drawSignatureInputGroup.classList.add("hidden");
+      uploadSignatureInputGroup.classList.add("hidden");
+      textSignatureInputGroup.classList.add("hidden");
+
+      if (method === "draw") {
+        drawSignatureInputGroup.classList.remove("hidden");
+      } else if (method === "upload") {
+        uploadSignatureInputGroup.classList.remove("hidden");
+      } else if (method === "text") {
+        textSignatureInputGroup.classList.remove("hidden");
+      }
+    }
+
+    signatureMethodSelect.addEventListener("change", toggleSignatureInputs);
+    toggleSignatureInputs();
+
+    // Drag and Drop Setup
+    if (dropZone && fileUploadInput) {
+      ["dragenter", "dragover", "dragleave", "drop"].forEach((eventName) => {
+        dropZone.addEventListener(
+          eventName,
+          (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+          },
+          false
+        );
+      });
+      ["dragenter", "dragover"].forEach((eventName) => {
+        dropZone.addEventListener(
+          eventName,
+          () => dropZone.classList.add("active"),
+          false
+        );
+      });
+      ["dragleave", "drop"].forEach((eventName) => {
+        dropZone.addEventListener(
+          eventName,
+          () => dropZone.classList.remove("active"),
+          false
+        );
+      });
+      dropZone.addEventListener(
+        "drop",
+        (e) => {
+          addFile(e.dataTransfer.files[0]);
+        },
+        false
+      );
+      dropZone.addEventListener("click", () => fileUploadInput.click());
+      fileUploadInput.onchange = (e) => {
+        addFile(e.target.files[0]);
+        e.target.value = null;
+      };
+    }
+
+    // Form Submission
+    toolForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      if (!currentFile) {
+        toast.show("Please upload a PDF file first.", "error");
+        return;
+      }
+
+      const method = signatureMethodSelect.value;
+      const position = document.getElementById("signaturePosition").value;
+      const page = document.getElementById("signaturePage").value;
+      const outputName = document.getElementById("outputName").value;
+
+      // Validate signature based on method
+      if (method === "draw") {
+        const canvas = signatureCanvas;
+        const ctx = canvas.getContext("2d");
+        const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+        const hasDrawing = imageData.data.some((pixel) => pixel !== 0);
+
+        if (!hasDrawing) {
+          toast.show("Please draw your signature on the canvas.", "error");
+          return;
+        }
+      } else if (method === "upload") {
+        const signatureImage = document.getElementById("signatureImage");
+        if (!signatureImage.files || signatureImage.files.length === 0) {
+          toast.show("Please upload a signature image.", "error");
+          return;
+        }
+      } else if (method === "text") {
+        const signatureText = document.getElementById("signatureText").value.trim();
+        if (!signatureText) {
+          toast.show("Please enter text for your signature.", "error");
+          return;
+        }
+      }
+
+      processBtn.disabled = true;
+      processBtn.querySelector("span").textContent = "Processing...";
+
+      try {
+        const formData = new FormData();
+        formData.append("file", currentFile.file);
+        formData.append("signatureMethod", method);
+        formData.append("signaturePosition", position);
+        formData.append("signaturePage", page);
+        formData.append("outputName", outputName);
+
+        if (method === "draw") {
+          // Convert canvas to blob
+          const blob = await new Promise((resolve) => {
+            signatureCanvas.toBlob(resolve, "image/png");
+          });
+          formData.append("signatureImage", blob, "signature.png");
+        } else if (method === "upload") {
+          const signatureImage = document.getElementById("signatureImage");
+          formData.append("signatureImage", signatureImage.files[0]);
+        } else if (method === "text") {
+          const signatureText = document.getElementById("signatureText").value;
+          const fontSize = document.getElementById("fontSize").value;
+          const fontFamily = document.getElementById("fontFamily").value;
+          formData.append("signatureText", signatureText);
+          formData.append("fontSize", fontSize);
+          formData.append("fontFamily", fontFamily);
+        }
+
+        const response = await fetch("/api/sign-pdf", {
+          method: "POST",
+          body: formData,
+        });
+
+        const data = await response.json();
+
+        if (data.success && response.ok) {
+          toast.show("PDF signed successfully!", "success");
+
+          const downloadLink = document.createElement("a");
+          downloadLink.href = data.downloadUrl;
+          downloadLink.download = outputName;
+          document.body.appendChild(downloadLink);
+          downloadLink.click();
+          document.body.removeChild(downloadLink);
+
+          // Reset form
+          currentFile = null;
+          fileListContainer.innerHTML = "";
+          canvasContext.clearRect(0, 0, signatureCanvas.width, signatureCanvas.height);
+          updateProcessButtonState();
+        } else {
+          toast.show(`Error: ${data.message || "Failed to sign PDF"}`, "error");
+        }
+      } catch (error) {
+        toast.show(`Network error: ${error.message}`, "error");
+      }
+
+      processBtn.disabled = false;
+      processBtn.querySelector("span").textContent = "Sign PDF";
+    });
+  </script>
+</body>
+
+</html>

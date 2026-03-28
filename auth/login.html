@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="PDF Toolkit Login - Securely sign in to access your tools." />
+    <meta name="theme-color" content="#6366f1" />
+    <link rel="icon" href="https://placehold.co/16x16/6366f1/ffffff?text=P" type="image/x-icon" />
+    <title>Login - PDF Toolkit</title>
+    <style>
+        /* --- Theme Variables copied from index.html for consistency --- */
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary: #8b5cf6;
+            --accent: #ec4899;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --dark: #0f172a;
+            --dark-light: #1e293b;
+            --gray: #64748b;
+            --gray-light: #cbd5e1;
+            --gray-lighter: #f1f5f9;
+            --white: #ffffff;
+            --text: #1e293b;
+            --text-light: #64748b;
+            --background: var(--white);
+            --surface: var(--white);
+            --border: var(--gray-lighter);
+            --gradient-1: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --focus-outline-color: var(--primary);
+        }
+
+        /* Dark Mode Variables (WCAG AA compliant contrast ensured) */
+        [data-theme="dark"] {
+            --primary: #818cf8;
+            --primary-dark: #6366f1;
+            --text: #e2e8f0;
+            --text-light: #94a3b8;
+            --background: #0f172a;
+            --surface: #1e293b;
+            --border: #334155;
+            --white: #0f172a;
+            --gray-lighter: #1e293b;
+            --gray-light: #374151;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.4);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.6);
+        }
+
+        /* --- End Theme Variables --- */
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+                "Helvetica Neue", Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--text);
+            background-color: var(--background);
+            transition: background-color 0.3s ease, color 0.3s ease;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+
+        /* Universal Focus Style for Accessibility */
+        button:focus,
+        a:focus,
+        input:focus,
+        [role="button"]:focus {
+            outline: 3px solid var(--primary);
+            outline-offset: 2px;
+            border-radius: 0.5rem;
+        }
+
+        .container {
+            max-width: 1280px;
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        .login-wrapper {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 2rem 0;
+        }
+
+        .login-content {
+            display: flex;
+            flex-direction: column;
+            gap: 2.5rem;
+            padding-right: 2rem;
+        }
+
+        .login-header h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 0.75rem;
+            color: var(--text);
+        }
+
+        .login-header p {
+            color: var(--text-light);
+            font-size: 1.25rem;
+        }
+
+        .login-form-container {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 1.5rem;
+            padding: 3rem 2.5rem;
+            box-shadow: var(--shadow-xl);
+            max-width: 450px;
+            width: 100%;
+            justify-self: end;
+        }
+
+        .login-form-container h2 {
+            color: var(--text);
+            margin-bottom: 0.5rem;
+            font-size: 2rem;
+            font-weight: 700;
+            text-align: center;
+        }
+
+        .login-form-container>p {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: var(--text-light);
+        }
+
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--text);
+            font-size: 0.95rem;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.875rem 1rem;
+            border: 2px solid var(--gray-light);
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            background: var(--surface);
+            color: var(--text);
+            transition: var(--transition);
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        }
+
+        .btn {
+            padding: 0.625rem 1.25rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            border: none;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            font-size: 1rem;
+            width: 100%;
+            min-height: 50px;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 4px 10px rgba(99, 102, 241, 0.25);
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(99, 102, 241, 0.35);
+        }
+
+        .btn-secondary {
+            background: var(--surface);
+            color: var(--text);
+            border: 1px solid var(--gray-light);
+        }
+
+        .btn-secondary:hover {
+            background: var(--gray-lighter);
+        }
+
+        .btn-google {
+            background: var(--surface);
+            color: var(--text);
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow-sm);
+            margin-bottom: 0.75rem;
+        }
+
+        .btn-google:hover {
+            border-color: var(--primary);
+            background: var(--gray-lighter);
+        }
+
+        .google-icon {
+            width: 20px;
+            height: 20px;
+        }
+
+        .form-footer {
+            margin-top: 1.5rem;
+            text-align: center;
+            color: var(--text-light);
+            font-size: 0.95rem;
+        }
+
+        .form-footer a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+
+        .form-footer a:hover {
+            text-decoration: underline;
+        }
+
+        .divider {
+            margin: 1.75rem 0;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            color: var(--text-light);
+            font-size: 0.875rem;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: "";
+            flex: 1;
+            height: 1px;
+            background: var(--border);
+        }
+
+        .benefits-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .benefit-item {
+            display: flex;
+            gap: 1rem;
+            align-items: flex-start;
+        }
+
+        .benefit-icon {
+            width: 48px;
+            height: 48px;
+            background: var(--gradient-1);
+            border-radius: 0.75rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+
+        .benefit-text h3 {
+            font-size: 1.1rem;
+            margin-bottom: 0.25rem;
+            color: var(--text);
+        }
+
+        .benefit-text p {
+            font-size: 0.9rem;
+            color: var(--text-light);
+        }
+
+        .back-home {
+            position: absolute;
+            top: 2rem;
+            left: 2rem;
+        }
+
+        .back-home a {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+
+        .back-home a:hover {
+            gap: 1rem;
+        }
+
+        /* Dark Mode Toggle - Integrated from index.html concept */
+        .theme-toggle {
+            position: fixed;
+            top: 2rem;
+            right: 2rem;
+            padding: 0.5rem;
+            border-radius: 0.5rem;
+            background: var(--gray-lighter);
+            color: var(--text);
+            font-size: 1.25rem;
+            transition: var(--transition);
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+        }
+
+        .theme-toggle:hover {
+            background: var(--gray-light);
+        }
+
+        /* Toast Notification Styles (copied from index.html) */
+        .toast-container {
+            position: fixed;
+            top: 5rem;
+            right: 1rem;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .toast {
+            padding: 1rem 1.5rem;
+            border-radius: 0.5rem;
+            box-shadow: var(--shadow-xl);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            min-width: 300px;
+            animation: slideIn 0.3s ease;
+            background: var(--surface);
+            color: var(--text);
+            border: 1px solid var(--border);
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        .toast.success {
+            border-left: 4px solid var(--success);
+        }
+
+        .toast.error {
+            border-left: 4px solid var(--danger);
+        }
+
+        .toast.info {
+            border-left: 4px solid var(--primary);
+        }
+
+        /* End Toast Styles */
+
+        @media (max-width: 900px) {
+            .login-wrapper {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+                padding-top: 0;
+            }
+
+            .login-content {
+                order: 2;
+                /* Move benefits below the form on mobile */
+                padding-right: 0;
+                text-align: center;
+            }
+
+            .login-header h1 {
+                font-size: 2.5rem;
+            }
+
+            .login-header p {
+                font-size: 1.1rem;
+            }
+
+            .login-form-container {
+                order: 1;
+                /* Keep form at the top on mobile */
+                justify-self: center;
+                max-width: 100%;
+                padding: 2rem 1.5rem;
+            }
+
+            .benefits-list {
+                align-items: center;
+            }
+
+            .benefit-item {
+                max-width: 350px;
+            }
+
+            .back-home,
+            .theme-toggle {
+                top: 1rem;
+            }
+        }
+    </style>
+</head>
+
+<body data-theme="light">
+    <div class="toast-container" id="toastContainer" aria-live="polite"></div>
+
+    <button id="theme-toggle" class="theme-toggle" aria-pressed="false" aria-label="Toggle dark mode"
+        title="Toggle dark mode">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+        </svg>
+    </button>
+
+    <div class="back-home">
+        <a href="../index.html" title="Go back to the homepage">
+            <span>&larr;</span>
+            <span>Back to Home</span>
+        </a>
+    </div>
+
+    <div class="container">
+        <div class="login-wrapper">
+            <div class="login-content">
+                <div class="login-header">
+                    <h1>Welcome Back</h1>
+                    <p>Sign in to access your secure PDF management toolkit.</p>
+                </div>
+
+                <div class="benefits-list">
+                    <div class="benefit-item">
+                        <div class="benefit-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <polyline points="12 6 12 12 16 14"></polyline>
+                            </svg>
+                        </div>
+                        <div class="benefit-text">
+                            <h3>Blazing Fast Processing</h3>
+                            <p>Enjoy lightning-speed merging, splitting, and conversion.</p>
+                        </div>
+                    </div>
+                    <div class="benefit-item">
+                        <div class="benefit-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                            </svg>
+                        </div>
+                        <div class="benefit-text">
+                            <h3>Bank-Grade Security</h3>
+                            <p>Your documents are encrypted and automatically deleted.</p>
+                        </div>
+                    </div>
+                    <div class="benefit-item">
+                        <div class="benefit-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                                <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+                            </svg>
+                        </div>
+                        <div class="benefit-text">
+                            <h3>Full Access to Pro Tools</h3>
+                            <p>
+                                Unlock OCR, PDF/A conversion, and advanced editing features.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="login-form-container">
+                <h2>Sign In</h2>
+                <p>to continue to PDF Toolkit</p>
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label for="loginEmail">Email Address</label>
+                        <input type="email" id="loginEmail" name="loginEmail" placeholder="you@example.com" required
+                            autocomplete="email" />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="loginPassword">Password</label>
+                        <input type="password" id="loginPassword" name="loginPassword" placeholder="••••••••" required
+                            autocomplete="current-password" />
+                    </div>
+
+                    <button type="submit" class="btn btn-primary" style="margin-top: 1rem">
+                        Sign In
+                    </button>
+                </form>
+
+                <div class="divider">or</div>
+
+                <button type="button" class="btn btn-google" id="connectGoogle">
+                    <svg class="google-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="48px"
+                        height="48px">
+                        <path fill="#FFC107"
+                            d="M43.611,20.083H42V20H24v8h11.303c-1.649,4.657-6.08,8-11.303,8c-6.627,0-12-5.373-12-12c0-6.627,5.373-12,12-12c3.059,0,5.842,1.158,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C12.955,4,4,12.955,4,24c0,11.045,8.955,20,20,20c11.045,0,19-8.955,19-20C43.611,21.083,43.611,20.083,43.611,20.083z" />
+                        <path fill="#FF3D00"
+                            d="M6.306,14.691l6.571,4.819C14.655,15.108,18.961,12,24,12c3.059,0,5.842,1.158,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C12.955,4,4,12.955,4,24c0,3.188,0.854,6.236,2.306,8.969L16,29.357L6.306,14.691z" />
+                        <path fill="#4CAF50"
+                            d="M24,44c5.166,0,9.947-1.897,13.435-5.071l-5.657-5.657C29.842,35.842,27.059,37,24,37c-5.22,0-9.651-3.343-11.303-8L6.306,32.97C8.117,39.245,15.227,44,24,44z" />
+                        <path fill="#1976D2"
+                            d="M43.611,20.083L42,20H24v8h11.303c-0.792,2.237-2.231,4.219-4.138,5.647L39.5,41C41.733,38.169,43.611,29.215,43.611,20.083z" />
+                    </svg>
+                    Sign in with Google
+                </button>
+
+                <button type="button" class="btn btn-secondary" id="continueGuest">
+                    Continue as Guest
+                </button>
+
+                <div class="form-footer">
+                    Don't have an account?
+                    <a href="signup.html">Create Account</a>
+                </div>
+
+                <div class="form-footer" style="margin-top: 1rem; font-size: 0.85rem; opacity: 0.8">
+                    <a href="#">Forgot your password?</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        // --- FIREBASE CONFIGURATION (Must match signup.html) ---
+        const firebaseConfig = {
+            apiKey: "AIzaSyDFbFrZXqfLVM0QQGmIM5W3dkBHCOkgIGg",
+            authDomain: "pdf-toolkit-90b52.firebaseapp.com",
+            projectId: "pdf-toolkit-90b52",
+            storageBucket: "pdf-toolkit-90b52.firebasestorage.app",
+            messagingSenderId: "93639766122",
+            appId: "1:93639766122:web:7f3105f91cd4de0feb5a13",
+            measurementId: "G-5PVV5HW2DG",
+        };
+
+        // --- FIREBASE IMPORTS ---
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-app.js";
+        import {
+            getAuth,
+            signInWithEmailAndPassword,
+            onAuthStateChanged,
+            GoogleAuthProvider, // Import GoogleAuthProvider
+            signInWithPopup,    // Import signInWithPopup
+            sendPasswordResetEmail,
+            signOut
+        } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-auth.js";
+
+        // Initialize Firebase services
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app); // Get the Auth service instance
+
+        // --- TOAST NOTIFICATION SYSTEM (Defined for use in module) ---
+        class Toast {
+            constructor(containerId = "toastContainer") {
+                this.container = document.getElementById(containerId);
+            }
+
+            show(message, type = "info", duration = 6000) {
+                const toast = document.createElement("div");
+                toast.className = `toast ${type}`;
+                toast.setAttribute("role", "status");
+
+                const messageSpan = document.createElement("span");
+                messageSpan.textContent = message;
+                toast.appendChild(messageSpan);
+
+                // Close button
+                const closeButton = document.createElement("button");
+                closeButton.textContent = "×";
+                // FIX: Removed line break in style.cssText string
+                closeButton.style.cssText = "background: none; border: none; font-size: 1.5rem; cursor: pointer; margin-left: auto; color: var(--text-light);";
+                closeButton.onclick = () => toast.remove();
+                toast.appendChild(closeButton);
+
+                this.container.appendChild(toast);
+
+                if (duration) {
+                    setTimeout(() => toast.remove(), duration);
+                }
+                return toast;
+            }
+        }
+        const toast = new Toast();
+        // --- END TOAST ---
+
+        // Dark mode toggle logic (Re-implemented to run within module)
+        const themeToggle = document.getElementById("theme-toggle");
+        const THEME_KEY = "pdfToolkitTheme";
+        const root = document.documentElement;
+
+        function updateToggleIcon() {
+            // Re-sets the SVG icon inside the button
+            themeToggle.innerHTML = `
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                </svg>
+            `;
+        }
+
+        function applyTheme(theme) {
+            const isDark = theme === "dark";
+            root.setAttribute("data-theme", isDark ? "dark" : "light");
+            themeToggle.setAttribute("aria-pressed", isDark);
+            updateToggleIcon();
+        }
+
+        const savedTheme = localStorage.getItem(THEME_KEY);
+        if (savedTheme) {
+            applyTheme(savedTheme);
+        } else {
+            const prefersDark =
+                window.matchMedia &&
+                window.matchMedia("(prefers-color-scheme: dark)").matches;
+            applyTheme(prefersDark ? "dark" : "light");
+        }
+
+        themeToggle.addEventListener("click", () => {
+            const currentTheme =
+                root.getAttribute("data-theme") === "dark" ? "dark" : "light";
+            const newTheme = currentTheme === "light" ? "dark" : "light";
+            localStorage.setItem(THEME_KEY, newTheme);
+            applyTheme(newTheme);
+        });
+        // --- END THEME LOGIC ---
+
+        // --- SESSION MANAGEMENT ---
+        // If user is already logged in, redirect to index
+        onAuthStateChanged(auth, (user) => {
+            if (user && user.emailVerified) {
+                window.location.href = "../index.html";
+            }
+        });
+
+        // --- GOOGLE AUTHENTICATION ---
+        const googleProvider = new GoogleAuthProvider();
+
+        // Google Connect button handler
+        document.getElementById("connectGoogle").addEventListener("click", async () => {
+            try {
+                // Disable button during process
+                const googleButton = document.getElementById("connectGoogle");
+                const originalButtonHtml = googleButton.innerHTML; // Store original button content
+                googleButton.disabled = true;
+                googleButton.innerHTML = `<svg class="google-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="48px" height="48px"><path fill="#FFC107" d="M43.611,20.083H42V20H24v8h11.303c-1.649,4.657-6.08,8-11.303,8c-6.627,0-12-5.373-12-12c0-6.627,5.373-12,12-12c3.059,0,5.842,1.158,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C12.955,4,4,12.955,4,24c0,11.045,8.955,20,20,20c11.045,0,19-8.955,19-20C43.611,21.083,43.611,20.083,43.611,20.083z"/><path fill="#FF3D00" d="M6.306,14.691l6.571,4.819C14.655,15.108,18.961,12,24,12c3.059,0,5.842,1.158,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C12.955,4,4,12.955,4,24c0,3.188,0.854,6.236,2.306,8.969L16,29.357L6.306,14.691z"/><path fill="#4CAF50" d="M24,44c5.166,0,9.947-1.897,13.435-5.071l-5.657-5.657C29.842,35.842,27.059,37,24,37c-5.22,0-9.651-3.343-11.303-8L6.306,32.97C8.117,39.245,15.227,44,24,44z"/><path fill="#1976D2" d="M43.611,20.083L42,20H24v8h11.303c-0.792,2.237-2.231,4.219-4.138,5.647L39.5,41C41.733,38.169,43.611,29.215,43.611,20.083z"/></svg> Signing In...`;
+
+                const result = await signInWithPopup(auth, googleProvider);
+                const user = result.user;
+
+                toast.show("Successfully signed in with Google.", "success");
+                setTimeout(() => {
+                    window.location.href = "../index.html";
+                }, 2000);
+
+            } catch (
+            error) {
+                const googleButton = document.getElementById("connectGoogle"); googleButton.disabled = false; // Restore original button content if sign-in fails 
+                googleButton.innerHTML = `<svg class="google-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="48px" height="48px"><path fill="#FFC107" d="M43.611,20.083H42V20H24v8h11.303c-1.649,4.657-6.08,8-11.303,8c-6.627,0-12-5.373-12-12c0-6.627,5.373-12,12-12c3.059,0,5.842,1.158,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C12.955,4,4,12.955,4,24c0,11.045,8.955,20,20,20c11.045,0,19-8.955,19-20C43.611,21.083,43.611,20.083,43.611,20.083z"/><path fill="#FF3D00" d="M6.306,14.691l6.571,4.819C14.655,15.108,18.961,12,24,12c3.059,0,5.842,1.158,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C12.955,4,4,12.955,4,24c0,3.188,0.854,6.236,2.306,8.969L16,29.357L6.306,14.691z"/><path fill="#4CAF50" d="M24,44c5.166,0,9.947-1.897,13.435-5.071l-5.657-5.657C29.842,35.842,27.059,37,24,37c-5.22,0-9.651-3.343-11.303-8L6.306,32.97C8.117,39.245,15.227,44,24,44z"/><path fill="#1976D2" d="M43.611,20.083L42,20H24v8h11.303c-0.792,2.237-2.231,4.219-4.138,5.647L39.5,41C41.733,38.169,43.611,29.215,43.611,20.083z"/></svg> Sign in with Google`;
+                const errorCode = error.code;
+                const errorMessage = error.message;
+                const email = error.customData ? error.customData.email : 'N/A';
+
+                let displayErrorMessage = "Failed to sign in with Google. Please try again.";
+
+                if (errorCode === 'auth/popup-closed-by-user') {
+                    displayErrorMessage = "Google sign-in was cancelled.";
+                } else if (errorCode === 'auth/cancelled-popup-request') {
+                    displayErrorMessage = "A Google sign-in request is already in progress.";
+                } else if (errorCode === 'auth/account-exists-with-different-credential') {
+                    displayErrorMessage = `An account with email ${email} already exists with different sign-in credentials.`;
+                } else if (errorCode === 'auth/operation-not-allowed') {
+                    displayErrorMessage = "Google sign-in is not enabled. Please enable it in Firebase Authentication settings.";
+                } else {
+                    console.error("Firebase Google Auth Error:", errorMessage);
+                }
+
+                toast.show(displayErrorMessage, "error");
+            }
+        });
+
+        // --- FORM HANDLERS ---
+        function isValidEmail(email) {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailRegex.test(email);
+        }
+
+        // --- LOGIN FORM SUBMISSION ---
+        document
+            .getElementById("loginForm")
+            .addEventListener("submit", async (e) => {
+                e.preventDefault();
+
+                // 1. Get Values
+                const email = document.getElementById("loginEmail").value;
+                const password = document.getElementById("loginPassword").value;
+
+                if (!isValidEmail(email)) {
+                    toast.show("Please enter a valid email address.", "error");
+                    return;
+                }
+
+                // Disable button during process
+                const submitButton = e.target.querySelector(".btn-primary");
+                submitButton.disabled = true;
+                const originalBtnText = submitButton.textContent;
+                submitButton.textContent = "Verifying...";
+
+                // 2. Firebase Sign In
+                try {
+                    const userCredential = await signInWithEmailAndPassword(
+                        auth,
+                        email,
+                        password
+                    );
+                    const user = userCredential.user;
+
+                    if (!user.emailVerified) {
+                        await signOut(auth);
+                        toast.show("Please verify your email before logging in.", "error");
+                        submitButton.disabled = false;
+                        submitButton.textContent = originalBtnText;
+                        return;
+                    }
+
+                    // Success feedback and redirection
+                    toast.show(
+                        `Welcome back, ${user.displayName || "User"}! Redirecting...`,
+                        "success"
+                    );
+
+                    // Redirect (onAuthStateChanged handles this, but explicit timeout adds polish)
+                    setTimeout(() => {
+                        window.location.href = "../index.html";
+                    }, 1000);
+                } catch (error) {
+                    // Handle specific Firebase errors
+                    let errorMessage = "Login failed. Check your email and password.";
+
+                    if (
+                        error.code === "auth/user-not-found" ||
+                        error.code === "auth/wrong-password" ||
+                        error.code === "auth/invalid-credential"
+                    ) {
+                        errorMessage =
+                            "Invalid credentials. Please check your email or password.";
+                    } else if (error.code === "auth/invalid-email") {
+                        errorMessage = "The email address format is invalid.";
+                    } else if (error.code === "auth/too-many-requests") {
+                        errorMessage =
+                            "Too many failed attempts. Please try again later.";
+                    } else if (error.code === "auth/user-disabled") {
+                        errorMessage = "This account has been disabled.";
+                    } else {
+                        console.error("Firebase Auth Error:", error.message);
+                    }
+
+                    toast.show(errorMessage, "error");
+                    submitButton.disabled = false;
+                    submitButton.textContent = originalBtnText;
+                }
+            });
+
+        // --- OTHER HANDLERS ---
+
+        // Continue as guest
+        document.getElementById("continueGuest").addEventListener("click", () => {
+            toast.show("Continuing as guest... Redirecting to home.", "info", 1500);
+            setTimeout(() => {
+                window.location.href = "../index.html";
+            }, 1500);
+        });
+
+        // Handle forgotten password link
+        document
+            .querySelector('.form-footer a[href="#"]')
+            .addEventListener("click", async (e) => {
+                e.preventDefault();
+                const emailInput = document.getElementById("loginEmail").value;
+
+                if (!emailInput) {
+                    toast.show("Please enter your email address in the field above to reset your password.", "error");
+                    return;
+                }
+
+                try {
+                    await sendPasswordResetEmail(auth, emailInput);
+                    toast.show("Password reset email sent. Check your inbox.", "success");
+                } catch (error) {
+                    console.error("Password Reset Error:", error.message);
+                    toast.show("Unable to send password reset email.", "error");
+                }
+            });
+
+        // Accessibility: Prevent form submission on Enter in password field
+        document
+            .getElementById("loginPassword")
+            .addEventListener("keypress", (e) => {
+                if (e.key === "Enter") {
+                    // Let default submit happen
+                }
+            });
+
+
+    </script>
+</body>
+
+</html>

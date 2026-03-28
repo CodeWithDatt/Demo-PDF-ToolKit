@@ -1,0 +1,849 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description"
+        content="The Ultimate PDF Toolkit - Fast, Secure, Powerful. Merge, split, compress, convert, OCR, and edit PDFs online." />
+    <meta name="theme-color" content="#6366f1" />
+    <link rel="icon" href="https://placehold.co/16x16/6366f1/ffffff?text=P" type="image/x-icon" />
+    <meta property="og:title" content="PDF Toolkit - The Ultimate PDF Solution" />
+    <meta property="og:description"
+        content="Merge, split, compress, convert, OCR, and edit PDFs online. Fast, secure, and powerful." />
+    <meta property="og:image" content="https://placehold.co/1200x630/6366f1/ffffff?text=PDF+Toolkit" />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="PDF Toolkit - The Ultimate PDF Solution" />
+    <meta name="twitter:description"
+        content="Merge, split, compress, convert, OCR, and edit PDFs online. Fast, secure, and powerful." />
+    <meta name="twitter:image" content="https://placehold.co/1200x630/6366f1/ffffff?text=PDF+Toolkit" />
+    <link rel="stylesheet" href="style.css" />
+
+    <title>PDF Toolkit - The Ultimate PDF Solution</title>
+</head>
+
+<body>
+    <div class="toast-container" id="toastContainer" aria-live="polite"></div>
+
+    <nav class="navbar">
+        <div class="navbar-container">
+            <a href="#" class="navbar-logo">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                    <polyline points="14 2 14 8 20 8"></polyline>
+                </svg>
+                <span>PDF Toolkit</span>
+            </a>
+
+            <ul class="navbar-menu" id="navbarMenu">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#tools">Tools</a></li>
+                <li><a href="#features">Features</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#contact">Contact</a></li>
+
+                <div class="navbar-actions">
+                    <div class="auth-section" id="authButtons">
+                        <a href="auth/login.html" class="btn btn-secondary"> Login </a>
+                        <a href="auth/signup.html" class="btn btn-primary"> Sign Up </a>
+                    </div>
+
+                    <div class="user-dropdown hidden" id="userDropdown">
+                        <button class="user-btn" id="userBtn" aria-expanded="false" aria-controls="userMenu">
+                            <span id="userName">User</span>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <polyline points="6 9 12 15 18 9"></polyline>
+                            </svg>
+                        </button>
+                        <div class="user-menu" id="userMenu" role="menu" aria-labelledby="userBtn">
+                            <a href="#dashboard" role="menuitem">Dashboard</a>
+                            <a href="#files" role="menuitem">My Files</a>
+                            <button id="logoutBtn" role="menuitem">Logout</button>
+                        </div>
+                    </div>
+
+                    <div class="language-selector">
+                        <button class="language-btn" id="langBtn" aria-expanded="false" aria-controls="langDropdown">
+                            EN
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <polyline points="6 9 12 15 18 9"></polyline>
+                            </svg>
+                        </button>
+                        <div class="language-dropdown" id="langDropdown" role="menu" aria-labelledby="langBtn">
+                            <a href="#" data-lang="en" role="menuitem">English</a>
+                            <a href="#" data-lang="es" role="menuitem">Español</a>
+                            <a href="#" data-lang="fr" data-lang="fr" role="menuitem">Français</a>
+                            <a href="#" data-lang="de" role="menuitem">Deutsch</a>
+                        </div>
+                    </div>
+
+                    <button id="theme-toggle" aria-pressed="false" aria-label="Toggle dark mode"
+                        title="Toggle dark mode">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                        </svg>
+                    </button>
+                </div>
+            </ul>
+
+            <button class="hamburger" id="hamburger" aria-label="Toggle navigation menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </nav>
+
+    <section class="hero" id="home">
+        <div class="container">
+            <div class="hero-content">
+                <h1>The Ultimate PDF Toolkit — Fast, Secure, Powerful</h1>
+                <p>
+                    Merge, split, compress, convert, OCR, and edit PDFs with ease.
+                    Professional-grade tools, simple to use, right in your browser.
+                </p>
+
+                <div class="hero-actions">
+                    <button class="btn btn-white btn-large" id="ctaMerge">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                            <polyline points="17 8 12 3 7 8"></polyline>
+                            <line x1="12" y1="3" x2="12" y2="15"></line>
+                        </svg>
+                        Try Merge PDF
+                    </button>
+                    <button class="btn btn-secondary btn-large" id="ctaTools">
+                        Browse All Tools
+                    </button>
+                </div>
+
+                <div class="hero-demo">
+                    <h3>Quick Merge Demo</h3>
+                    <div class="drop-zone" id="mergeDropZone" tabindex="0" role="button"
+                        aria-label="Drop PDF files here or click to browse">
+                        <input type="file" id="fileUploadInput" name="fileUploadInput" multiple
+                            accept=".pdf,.png,.jpg,.jpeg" style="display: none" />
+
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                            <polyline points="17 8 12 3 7 8"></polyline>
+                            <line x1="12" y1="3" x2="12" y2="15"></line>
+                        </svg>
+                        <p>Drop PDF, PNG, JPG files here or click to browse</p>
+                    </div>
+                    <div id="mergeFileList" class="file-list"></div>
+                    <button class="btn btn-primary btn-large" id="startUploadBtn" style="width: 100%; margin-top: 1rem"
+                        disabled>
+                        Start Merge & Upload
+                    </button>
+                    <button class="btn btn-primary btn-large hidden" id="downloadBtn"
+                        style="width: 100%; margin-top: 1rem">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" style="margin-right: 0.5rem">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                            <polyline points="7 10 12 15 17 10"></polyline>
+                            <line x1="12" y1="15" x2="12" y2="3"></line>
+                        </svg>
+                        Download Merged PDF
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section" id="tools">
+        <div class="container">
+            <div class="section-header">
+                <h2>All PDF Tools</h2>
+                <p>
+                    Professional PDF tools for every need. Fast, secure, and easy to
+                    use.
+                </p>
+            </div>
+
+            <div class="tools-controls">
+                <div class="search-box">
+                    <input type="text" id="searchTools" placeholder="Search tools..." />
+                </div>
+                <div class="category-filters" role="group" aria-label="Tool category filters">
+                    <button class="category-btn active" data-category="all">All</button>
+                    <button class="category-btn" data-category="edit">Edit</button>
+                    <button class="category-btn" data-category="convert">
+                        Convert
+                    </button>
+                    <button class="category-btn" data-category="security">
+                        Security
+                    </button>
+                    <button class="category-btn" data-category="images">Images</button>
+                    <button class="category-btn" data-category="ocr">OCR</button>
+                    <button class="category-btn" data-category="office">Office</button>
+                    <button class="category-btn" data-category="utilities">
+                        Utilities
+                    </button>
+                    <button class="category-btn" data-category="workflow">
+                        Workflow
+                    </button>
+                </div>
+            </div>
+
+            <div class="tools-grid" id="toolsGrid">
+                <div class="tool-card" data-category="edit" data-tool="merge">
+                    <div class="tool-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z">
+                            </path>
+                        </svg>
+                    </div>
+                    <h3>Merge PDF</h3>
+                    <p>
+                        Combine multiple PDF files into a single document quickly and
+                        easily.
+                    </p>
+                    <a href="tools/merge-pdf.html" class="btn btn-primary" data-tool="merge">Open</a>
+                </div>
+
+                <div class="tool-card" data-category="edit" data-tool="split">
+                    <div class="tool-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                            <line x1="12" y1="8" x2="12" y2="16"></line>
+                        </svg>
+                    </div>
+                    <h3>Split PDF</h3>
+                    <p>Extract pages from your PDF or split into multiple files.</p>
+                    <a href="tools/split-pdf.html" class="btn btn-primary" data-tool="split">Open</a>
+                </div>
+
+                <div class="tool-card" data-category="utilities" data-tool="compress">
+                    <div class="tool-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="16 16 12 12 8 16"></polyline>
+                            <line x1="12" y1="12" x2="12" y2="21"></line>
+                            <path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"></path>
+                        </svg>
+                    </div>
+                    <h3>Compress PDF</h3>
+                    <p>Reduce PDF file size while maintaining quality.</p>
+                    <a href="tools/compress-pdf.html" class="btn btn-primary" data-tool="compress">Open</a>
+                </div>
+
+
+
+                <div class="tool-card" data-category="office convert" data-tool="word-to-pdf">
+                    <div class="tool-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+                        </svg>
+                    </div>
+                    <h3>Word to PDF</h3>
+                    <p>Convert Word documents to PDF format.</p>
+                    <a href="tools/word-to-pdf.html" class="btn btn-primary" data-tool="word-to-pdf">Open</a>
+                </div>
+
+
+
+                <div class="tool-card" data-category="images convert" data-tool="pdf-to-jpg">
+                    <div class="tool-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                            <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                            <polyline points="21 15 16 10 5 21"></polyline>
+                        </svg>
+                    </div>
+                    <h3>PDF to JPG</h3>
+                    <p>Convert PDF pages to JPG images.</p>
+                    <a href="tools/pdf-to-jpg.html" class="btn btn-primary" data-tool="pdf-to-jpg">Open</a>
+                </div>
+
+                <div class="tool-card" data-category="images convert" data-tool="image-to-pdf">
+                    <div class="tool-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                            <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                            <polyline points="21 15 16 10 5 21"></polyline>
+                        </svg>
+                    </div>
+                    <h3>Image to PDF</h3>
+                    <p>Convert JPG, PNG, and other images to PDF.</p>
+                    <a href="tools/image-to-pdf.html" class="btn btn-primary" data-tool="image-to-pdf">Open</a>
+                </div>
+
+                <div class="tool-card" data-category="edit utilities" data-tool="add-page-numbers">
+                    <div class="tool-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="8" y1="6" x2="21" y2="6"></line>
+                            <line x1="8" y1="12" x2="21" y2="12"></line>
+                            <line x1="8" y1="18" x2="21" y2="18"></line>
+                            <line x1="3" y1="6" x2="3.01" y2="6"></line>
+                            <line x1="3" y1="12" x2="3.01" y2="12"></line>
+                            <line x1="3" y1="18" x2="3.01" y2="18"></line>
+                        </svg>
+                    </div>
+                    <h3>Add Page Numbers</h3>
+                    <p>Add page numbers to your PDF documents.</p>
+                    <a href="tools/add-page-numbers.html" class="btn btn-primary" data-tool="add-page-numbers">Open</a>
+                </div>
+
+                <div class="tool-card" data-category="edit security" data-tool="add-watermark">
+                    <div class="tool-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"></path>
+                        </svg>
+                    </div>
+                    <h3>Add Watermark</h3>
+                    <p>Add text or image watermarks to PDF pages.</p>
+                    <a href="tools/add-watermark.html" class="btn btn-primary" data-tool="add-watermark">Open</a>
+                </div>
+
+                <div class="tool-card" data-category="edit utilities" data-tool="rotate-pdf">
+                    <div class="tool-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="23 4 23 10 17 10"></polyline>
+                            <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path>
+                        </svg>
+                    </div>
+                    <h3>Rotate PDF</h3>
+                    <p>Rotate PDF pages to the correct orientation.</p>
+                    <a href="tools/rotate-pdf.html" class="btn btn-primary" data-tool="rotate-pdf">Open</a>
+                </div>
+
+                <div class="tool-card" data-category="security" data-tool="unlock-pdf">
+                    <div class="tool-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                            <path d="M7 11V7a5 5 0 0 1 9.9-1"></path>
+                        </svg>
+                    </div>
+                    <h3>Unlock PDF</h3>
+                    <p>Remove password protection from PDF files.</p>
+                    <a href="tools/unlock-pdf.html" class="btn btn-primary" data-tool="unlock-pdf">Open</a>
+                </div>
+
+                <div class="tool-card" data-category="security" data-tool="protect-pdf">
+                    <div class="tool-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                            <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                        </svg>
+                    </div>
+                    <h3>Protect PDF</h3>
+                    <p>Add password protection to your PDF files.</p>
+                    <a href="tools/protect-pdf.html" class="btn btn-primary" data-tool="protect-pdf">Open</a>
+                </div>
+
+                <div class="tool-card" data-category="edit utilities" data-tool="remove-pages">
+                    <div class="tool-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="3 6 5 6 21 6"></polyline>
+                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
+                            </path>
+                        </svg>
+                    </div>
+                    <h3>Remove PDF Pages</h3>
+                    <p>Delete unwanted pages from your PDF.</p>
+                    <a href="tools/remove-pages.html" class="btn btn-primary" data-tool="remove-pages">Open</a>
+                </div>
+
+                <div class="tool-card" data-category="edit utilities" data-tool="reorder-pages">
+                    <div class="tool-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="4" y1="9" x2="20" y2="9"></line>
+                            <line x1="4" y1="15" x2="20" y2="15"></line>
+                            <line x1="10" y1="3" x2="8" y2="21"></line>
+                            <line x1="16" y1="3" x2="14" y2="21"></line>
+                        </svg>
+                    </div>
+                    <h3>Reorder PDF Pages</h3>
+                    <p>Rearrange pages in your PDF document.</p>
+                    <a href="tools/reorder-pages.html" class="btn btn-primary" data-tool="reorder-pages">Open</a>
+                </div>
+
+
+
+                <div class="tool-card" data-category="edit security" data-tool="sign-pdf">
+                    <div class="tool-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M3 17a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v1a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-1z"></path>
+                            <path d="M12 15V3"></path>
+                        </svg>
+                    </div>
+                    <h3>Sign PDF</h3>
+                    <p>Add electronic signatures to PDF documents.</p>
+                    <a href="tools/sign-pdf.html" class="btn btn-primary" data-tool="sign-pdf">Open</a>
+                </div>
+
+
+            </div>
+        </div>
+    </section>
+
+    <section class="section how-it-works" id="how-it-works">
+        <div class="container">
+            <div class="section-header">
+                <h2>How It Works</h2>
+                <p>Three simple steps to process your PDFs.</p>
+            </div>
+
+            <div class="steps-grid">
+                <div class="step">
+                    <div class="step-icon">1</div>
+                    <h3>Upload</h3>
+                    <p>
+                        Select or drag & drop your PDF files. Your documents are processed
+                        securely.
+                    </p>
+                </div>
+                <div class="step">
+                    <div class="step-icon">2</div>
+                    <h3>Process</h3>
+                    <p>
+                        Choose your desired operation. Our tools work fast with
+                        professional-grade accuracy.
+                    </p>
+                </div>
+                <div class="step">
+                    <div class="step-icon">3</div>
+                    <h3>Download</h3>
+                    <p>
+                        Get your processed files instantly. Files are automatically
+                        deleted after processing.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section" id="features">
+        <div class="container">
+            <div class="section-header">
+                <h2>Why Choose PDF Toolkit</h2>
+                <p>Professional features for individuals and businesses.</p>
+            </div>
+
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <polyline points="12 6 12 12 16 14"></polyline>
+                        </svg>
+                    </div>
+                    <h3>Lightning Fast</h3>
+                    <p>
+                        Process PDFs in seconds with our optimized algorithms and
+                        infrastructure.
+                    </p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                        </svg>
+                    </div>
+                    <h3>100% Secure</h3>
+                    <p>
+                        Your files are encrypted and automatically deleted after
+                        processing.
+                    </p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path
+                                d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z">
+                            </path>
+                        </svg>
+                    </div>
+                    <h3>Client-Side Privacy</h3>
+                    <p>
+                        Many operations run directly in your browser for maximum privacy.
+                    </p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                            <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                        </svg>
+                    </div>
+                    <h3>Cloud Backend</h3>
+                    <p>
+                        Powerful server processing for complex operations when needed.
+                    </p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+                        </svg>
+                    </div>
+                    <h3>No Installation</h3>
+                    <p>
+                        Works directly in your browser. No software to download or
+                        install.
+                    </p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
+                    </div>
+                    <h3>Accurate Conversion</h3>
+                    <p>
+                        Maintain formatting and quality with our advanced conversion
+                        engine.
+                    </p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                            <circle cx="12" cy="12" r="3"></circle>
+                        </svg>
+                    </div>
+                    <h3>HD OCR Technology</h3>
+                    <p>
+                        Extract text from scanned documents with industry-leading
+                        accuracy.
+                    </p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect>
+                            <line x1="12" y1="18" x2="12.01" y2="18"></line>
+                        </svg>
+                    </div>
+                    <h3>Mobile Friendly</h3>
+                    <p>
+                        Works perfectly on smartphones and tablets. Process PDFs anywhere.
+                    </p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                            <polyline points="7 10 12 15 17 10"></polyline>
+                            <line x1="12" y1="15" x2="12" y2="3"></line>
+                        </svg>
+                    </div>
+                    <h3>Works Offline</h3>
+                    <p>Basic operations available offline for quick tasks.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="16 18 22 12 16 6"></polyline>
+                            <polyline points="8 6 2 12 8 18"></polyline>
+                        </svg>
+                    </div>
+                    <h3>API Available</h3>
+                    <p>Integrate PDF processing into your applications with our API.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                        </svg>
+                    </div>
+                    <h3>Dark Mode</h3>
+                    <p>Easy on the eyes with beautiful dark mode support.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="12" cy="7" r="4"></circle>
+                        </svg>
+                    </div>
+                    <h3>Free Tier</h3>
+                    <p>Generous free tier with most features available at no cost.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section" id="about">
+        <div class="container">
+            <div class="section-header">
+                <h2>About PDF Toolkit</h2>
+                <p>Learn more about our mission and technology.</p>
+            </div>
+
+            <div class="about-content">
+                <h3>Our Mission</h3>
+                <p>
+                    We believe PDF tools should be powerful, accessible, and secure. PDF
+                    Toolkit combines the best of ILovePDF, Adobe, and SmallPDF into one
+                    comprehensive platform that respects your privacy and delivers
+                    professional results.
+                </p>
+
+                <h3>Technology</h3>
+                <p>
+                    Built with modern web technologies, PDF Toolkit leverages both
+                    client-side processing for privacy and cloud infrastructure for
+                    power. Our hybrid approach means simple operations happen instantly
+                    in your browser, while complex tasks are handled by our optimized
+                    servers.
+                </p>
+
+                <h3>Privacy Philosophy</h3>
+                <p>
+                    Your documents are your business. We process files securely, encrypt
+                    all transfers, and automatically delete files after processing. Many
+                    operations run entirely in your browser, meaning your files never
+                    leave your device.
+                </p>
+
+                <h3>Why Free?</h3>
+                <p>
+                    We believe everyone should have access to professional PDF tools.
+                    Our free tier is supported by our Pro users, who get additional
+                    features, higher limits, and priority support. But our core mission
+                    remains: making PDF tools accessible to all.
+                </p>
+
+                <h3>Future Roadmap</h3>
+                <p>
+                    We're constantly improving PDF Toolkit with new features, better
+                    performance, and enhanced security. Upcoming features include
+                    advanced batch processing, team collaboration tools, cloud storage
+                    integration, and AI-powered document analysis.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <section class="section testimonials">
+        <div class="container">
+            <div class="section-header">
+                <h2>What Our Users Say</h2>
+                <p>Join thousands of satisfied users worldwide.</p>
+            </div>
+
+            <div class="testimonials-grid">
+                <div class="testimonial-card">
+                    <p class="testimonial-text">
+                        "PDF Toolkit has completely replaced all other PDF tools for me.
+                        It's fast, reliable, and the privacy-first approach gives me peace
+                        of mind when handling sensitive documents."
+                    </p>
+                    <div class="testimonial-author">
+                        <div class="testimonial-avatar">SJ</div>
+                        <div class="testimonial-info">
+                            <h4>Sarah Johnson</h4>
+                            <p>Legal Consultant</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="testimonial-card">
+                    <p class="testimonial-text">
+                        "As a developer, I love the API integration. The documentation is
+                        clear, and the endpoints are fast and reliable. We've processed
+                        millions of PDFs without issues."
+                    </p>
+                    <div class="testimonial-author">
+                        <div class="testimonial-avatar">MC</div>
+                        <div class="testimonial-info">
+                            <h4>Michael Chen</h4>
+                            <p>Software Engineer</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="testimonial-card">
+                    <p class="testimonial-text">
+                        "The OCR accuracy is outstanding. I digitize old documents
+                        regularly, and PDF Toolkit's OCR feature saves me hours compared
+                        to other tools I've tried."
+                    </p>
+                    <div class="testimonial-author">
+                        <div class="testimonial-avatar">EP</div>
+                        <div class="testimonial-info">
+                            <h4>Emily Parker</h4>
+                            <p>Archivist</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="testimonial-card">
+                    <p class="testimonial-text">
+                        "Simple, powerful, and free for basic use. Perfect for my small
+                        business. The merge and split tools alone are worth it, but having
+                        all tools in one place is fantastic."
+                    </p>
+                    <div class="testimonial-author">
+                        <div class="testimonial-avatar">DM</div>
+                        <div class="testimonial-info">
+                            <h4>David Martinez</h4>
+                            <p>Small Business Owner</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section developer-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Developer API</h2>
+                <p>Integrate PDF processing into your applications.</p>
+            </div>
+
+            <div class="code-examples">
+                <div class="code-example">
+                    <h3>Get Presigned URL</h3>
+                    <pre><code>// Request presigned upload URL
+const response = await fetch('/files/presign', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({
+    filename: 'document.pdf',
+    contentType: 'application/pdf'
+  })
+});
+const { uploadUrl, fileId } = await response.json();</code></pre>
+                </div>
+
+                <div class="code-example">
+                    <h3>Merge PDFs</h3>
+                    <pre><code>// Merge multiple PDFs
+const mergeResponse = await fetch('/api/merge', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    'Authorization': 'Bearer YOUR_API_KEY'
+  },
+  body: JSON.stringify({
+    files: [fileId1, fileId2, fileId3],
+    outputFilename: 'merged.pdf'
+  })
+});
+const { jobId } = await mergeResponse.json();</code></pre>
+                </div>
+
+                <div class="code-example">
+                    <h3>Check Job Status</h3>
+                    <pre><code>// Poll for job completion
+const checkStatus = async (jobId) => {
+  const response = await fetch(`/jobs/${jobId}`, {
+    headers: { 'Authorization': 'Bearer YOUR_API_KEY' }
+  });
+  const job = await response.json();
+  if (job.status === 'completed') {
+    return job.resultUrl;
+  } else if (job.status === 'failed') {
+    throw new Error(job.error);
+  }
+  // Poll again after delay
+  await new Promise(r => setTimeout(r, 1000));
+  return checkStatus(jobId);
+};</code></pre>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer" id="contact">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>PDF Toolkit</h4>
+                    <p>
+                        The ultimate PDF solution for individuals and businesses. Fast,
+                        secure, and powerful.
+                    </p>
+                    <div class="social-links">
+                        <a href="#" aria-label="Twitter">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path
+                                    d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z">
+                                </path>
+                            </svg>
+                        </a>
+                        <a href="#" aria-label="GitHub">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path
+                                    d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22">
+                                </path>
+                            </svg>
+                        </a>
+                        <a href="#" aria-label="LinkedIn">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path
+                                    d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z">
+                                </path>
+                                <rect x="2" y="9" width="4" height="12"></rect>
+                                <circle cx="4" cy="4" r="2"></circle>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Product</h4>
+                    <ul class="footer-links">
+                        <li><a href="#tools">All Tools</a></li>
+                        <li><a href="#features">Features</a></li>
+                        <li><a href="#api">API</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Company</h4>
+                    <ul class="footer-links">
+                        <li><a href="#about">About Us</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                        <li><a href="#careers">Careers</a></li>
+                        <li><a href="#blog">Blog</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Legal</h4>
+                    <ul class="footer-links">
+                        <li><a href="#privacy">Privacy Policy</a></li>
+                        <li><a href="#terms">Terms of Service</a></li>
+                        <li><a href="#security">Security</a></li>
+                        <li><a href="#gdpr">GDPR</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>
+                    &copy; <span id="currentYear"></span> PDF Toolkit. All rights
+                    reserved.
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <script type="module" src="script.js"></script>
+</body>
+
+</html>
