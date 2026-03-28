@@ -1,7 +1,7 @@
-Flask==2.3.3          → Flask framework
-Flask-CORS==4.0.0     → CORS handling
-Werkzeug==2.3.7       → Flask utilities
-Pillow==10.4.0        → Image processing (PIL)
-PyPDF2==3.0.1         → PDF operations
-PyMuPDF==1.23.8       → PDF to JPG (import fitz)
-reportlab==4.0.7      → PDF creation
+Flask==2.3.3          
+Flask-CORS==4.0.0     
+Werkzeug==2.3.7       
+Pillow==10.4.0      
+PyPDF2==3.0.1       
+PyMuPDF==1.23.8      
+reportlab==4.0.7     
