@@ -1,0 +1,9 @@
+{
+  "cleanUrls": true,
+  "rewrites": [
+    {
+      "source": "/api/:path*",
+      "destination": "https://pdf-toolkit-backend-7ir8.onrender.com/api/:path*"
+    }
+  ]
+}
