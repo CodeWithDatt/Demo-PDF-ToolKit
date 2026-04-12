@@ -654,3 +654,9 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 });
 
+// New added
+document.getElementById("ctaTools").addEventListener("click", function() {
+    document.getElementById("tools").scrollIntoView({
+        behavior: "smooth"
+    });
+});
