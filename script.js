@@ -660,3 +660,7 @@ document.getElementById("ctaTools").addEventListener("click", function() {
         behavior: "smooth"
     });
 });
+
+document.getElementById("ctaMerge").addEventListener("click", function() {
+    window.location.href = "tools/merge-pdf.html";
+});
